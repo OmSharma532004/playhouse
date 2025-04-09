@@ -1,0 +1,44 @@
+.container {
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  gap: 20px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.container.Temperature {
+  background-color: #f5a623; /* Warm orange for temperature */
+}
+
+.container.Humidity {
+  background-color: #5fb7f5; /* Cool blue for humidity */
+}
+
+.container.Oxygen {
+  background-color: #aed581; /* Fresh green for oxygen */
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.number {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.detail {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.positive {
+  color: white;
+}
+
+.negative {
+  color: red;
+}
