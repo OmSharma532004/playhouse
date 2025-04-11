@@ -12,6 +12,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 
 import { WarehouseProvider } from './components/contextapi/WarehouseContext'; // Import the WarehouseProvider
 import Dashboard2 from './pages/Dashboard2/index';
+import CropListByUser from './pages/AvailableCrops';
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/crop-input" element={<CropInput />} />
         <Route path="/warehouse-input" element={<WarehouseInput />} />
         <Route path="/dashboard" element={<Dashboard2 />} />
+        <Route path="/availableCrops" element={<CropListByUser />} />
       </Routes>
     </WarehouseProvider>
   );

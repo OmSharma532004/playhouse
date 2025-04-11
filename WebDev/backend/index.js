@@ -18,7 +18,20 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to database"));
 
-app.use(cors({ origin: "*", credentials: true }));
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
+
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.json());
 
@@ -36,6 +49,12 @@ app.use("/spoilage", spoilageRouter);
 
 const alert = require("./routes/alert");
 app.use("/alert", alert);
+
+const crops=require("./routes/crop");
+app.use("/crops", crops);
+
+const chats=require("./routes/chat");
+app.use("/chat", crops);
 
 
 
