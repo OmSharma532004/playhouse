@@ -13,6 +13,8 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import { WarehouseProvider } from './components/contextapi/WarehouseContext'; // Import the WarehouseProvider
 import Dashboard2 from './pages/Dashboard2/index';
 import CropListByUser from './pages/AvailableCrops';
+import ChatList from './pages/Chat/ChatList';
+import ChatRoom from './pages/Chat/ChatRoom';
 
 
 const App = () => {
@@ -28,6 +30,8 @@ const App = () => {
         <Route path="/warehouse-input" element={<WarehouseInput />} />
         <Route path="/dashboard" element={<Dashboard2 />} />
         <Route path="/availableCrops" element={<CropListByUser />} />
+        <Route path="/chatList" element={<ChatList />} />
+        <Route path="/chat/:userId" element={<ChatRoom />} />
       </Routes>
     </WarehouseProvider>
   );

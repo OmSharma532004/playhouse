@@ -13,9 +13,9 @@ const authenticate = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    console.log(token);
+ 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
+
 
     const user = await User.findById(decoded.userId);
     if (!user) {
@@ -23,9 +23,15 @@ const authenticate = async (req, res, next) => {
     }
 
     req.user = user; // ✅ Attach user to request
+    console.log("Authenticated user:", req.user);
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid or expired token' });
+    console.log(error);
+    res.status(401).json({
+      success : false,
+      message: 'Authentication failed',
+
+      error: error });
   }
 };
 
