@@ -42,7 +42,6 @@ const SignUpForm = () => {
       if (response.ok) {
         const data = await response.json();
         console.log("User registered successfully:", data);
-        // localStorage.setItem("userId", JSON.stringify(data.user._id));
         setIsLogin(true);
       } else {
         const errorData = await response.json();
@@ -54,7 +53,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-purple-600 via-pink-500 to-red-500">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-slate-900 via-gray-900 to-gray-800 relative">
       {/* Back to Home */}
       <div className="absolute top-6 left-6">
         <Link
@@ -66,71 +65,70 @@ const SignUpForm = () => {
       </div>
 
       {/* Sign-Up Form */}
-      <div className="w-full max-w-lg p-8 bg-white/30 backdrop-blur-md rounded-xl shadow-xl animate-slide-up">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">
-          Create an Account
+      <div className="w-full max-w-lg px-10 py-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl animate-fade-in">
+        <h2 className="text-3xl font-bold text-white text-center mb-3 tracking-wide">
+          Create Account
         </h2>
-        <p className="text-center text-gray-600 mb-8">
-          Enter your details to sign up.
+        <p className="text-center text-gray-300 mb-8 text-base">
+          Join the community to access your dashboard
         </p>
 
-        {/* Form */}
         <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-          {/* Name Input */}
+          {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-lg font-medium text-gray-700 mb-2">
+            <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
               Name
             </label>
             <input
               id="name"
               type="text"
-              placeholder="Enter your name"
+              placeholder="John Doe"
               onChange={(e) => handleInputChange("name", e.target.value)}
-              className="w-full p-3 bg-gray-100 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full px-4 py-3 bg-white/20 text-white placeholder-white/70 rounded-lg border border-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
           </div>
 
-          {/* Email Input */}
+          {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-lg font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
               Email
             </label>
             <input
               id="email"
               type="email"
-              placeholder="Enter your email"
+              placeholder="you@example.com"
               onChange={(e) => handleInputChange("email", e.target.value)}
-              className="w-full p-3 bg-gray-100 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300"
+              className="w-full px-4 py-3 bg-white/20 text-white placeholder-white/70 rounded-lg border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
           </div>
 
-          {/* Password Input */}
+          {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-lg font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
               Password
             </label>
             <input
               id="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               onChange={(e) => handleInputChange("password", e.target.value)}
-              className="w-full p-3 bg-gray-100 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
+              className="w-full px-4 py-3 bg-white/20 text-white placeholder-white/70 rounded-lg border border-white/30 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
 
-          {/* Type Selection */}
+          {/* Account Type */}
           <div>
-            <label htmlFor="type" className="block text-lg font-medium text-gray-700 mb-2">
+            <label htmlFor="type" className="block text-sm font-medium text-white mb-2">
               Account Type
             </label>
             <select
               id="type"
               value={formData.type}
               onChange={(e) => handleTypeChange(e.target.value)}
-              className="w-full p-3 bg-gray-100 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
+              className="w-full px-4 py-3 bg-white/20 text-white placeholder-white/70 rounded-lg border border-white/30 focus:outline-none focus:ring-2 focus:ring-pink-400"
             >
               <option value="" disabled>
-                Select your type
+                Select account type
               </option>
               <option value="producer">Producer</option>
               <option value="retailer">Retailer</option>
@@ -141,19 +139,19 @@ const SignUpForm = () => {
           <button
             type="button"
             onClick={handleSubmit}
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-bold rounded-lg hover:scale-105 transform transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            className="w-full py-3 mt-2 bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-semibold text-lg rounded-lg shadow-lg hover:scale-[1.02] transition-transform focus:outline-none focus:ring-4 focus:ring-cyan-300"
           >
             Sign Up
           </button>
         </form>
 
         {/* Redirect to Login */}
-        <div className="mt-6 text-center">
-          <p className="text-gray-700">
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-300">
             Already have an account?{" "}
             <Link
               to="/auth/login"
-              className="text-blue-600 hover:underline hover:text-blue-800"
+              className="text-cyan-400 font-medium hover:underline"
             >
               Sign In
             </Link>

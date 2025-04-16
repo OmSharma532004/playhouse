@@ -4,21 +4,20 @@ const CropListByUser = () => {
   const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
     const fetchCrops = async () => {
       try {
-       
         const token = localStorage.getItem('token');
-console.log('Sending token:', token); // check this before fetch
+        console.log('Sending token:', token); // check this before fetch
 
-        const res = await fetch( `${backendUrl}/crops/getallbyuser`, {
+        const res = await fetch(`${backendUrl}/crops/getallbyuser`, {
           method: 'GET',
           headers: {
-        'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
-          
         });
 
         const data = await res.json();
@@ -40,41 +39,43 @@ console.log('Sending token:', token); // check this before fetch
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-3xl font-bold mb-6 text-center">Your Crops</h2>
+    <div className="max-w-6xl mx-auto mt-10 p-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-lg">
+      <h2 className="text-4xl font-bold mb-6 text-center text-indigo-800">Your Crops</h2>
 
       {loading ? (
-        <p className="text-center text-gray-500">Loading crops...</p>
+        <div className="text-center text-gray-500 animate-pulse">
+          <p className="text-lg">Loading crops...</p>
+        </div>
       ) : message ? (
-        <p className="text-center text-red-500">{message}</p>
+        <div className="text-center text-red-600">
+          <p className="text-lg font-semibold">{message}</p>
+        </div>
       ) : crops.length === 0 ? (
-        <p className="text-center text-gray-500">No crops found.</p>
+        <div className="text-center text-gray-500">
+          <p className="text-lg">No crops found.</p>
+        </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200">
-            <thead className="bg-indigo-600 text-white">
-              <tr>
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-left">Quantity</th>
-                <th className="px-4 py-2 text-left">Price/Unit</th>
-                <th className="px-4 py-2 text-left">Description</th>
-                <th className="px-4 py-2 text-left">Date Added</th>
-              </tr>
-            </thead>
-            <tbody>
-              {crops.map((crop) => (
-                <tr key={crop._id} className="border-t border-gray-200">
-                  <td className="px-4 py-2">{crop.name}</td>
-                  <td className="px-4 py-2">{crop.quantity}</td>
-                  <td className="px-4 py-2">${crop.pricePerUnit.toFixed(2)}</td>
-                  <td className="px-4 py-2">{crop.description}</td>
-                  <td className="px-4 py-2">
-                    {new Date(crop.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {crops.map((crop) => (
+            <div
+              key={crop._id}
+              className="bg-white rounded-lg shadow-xl p-6 hover:scale-105 transition-all duration-300 transform"
+            >
+              <h3 className="text-xl font-semibold text-indigo-800">{crop.name}</h3>
+              <p className="text-gray-600 mt-2">
+                <strong>Quantity:</strong> {crop.quantity}
+              </p>
+              <p className="text-gray-600 mt-2">
+                <strong>Price/Unit:</strong> ${crop.pricePerUnit.toFixed(2)}
+              </p>
+              <p className="text-gray-600 mt-2">
+                <strong>Description:</strong> {crop.description}
+              </p>
+              <p className="text-gray-600 mt-2">
+                <strong>Date Added:</strong> {new Date(crop.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
         </div>
       )}
     </div>

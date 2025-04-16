@@ -47,7 +47,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-purple-600 via-pink-500 to-red-500">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-slate-900 via-gray-900 to-gray-800 relative">
       {/* Back to Home */}
       <div className="absolute top-6 left-6">
         <Link
@@ -58,64 +58,67 @@ const LoginForm = () => {
         </Link>
       </div>
 
-      {/* Login Form */}
-      <div className="w-full max-w-md p-8 bg-white/30 backdrop-blur-md rounded-xl shadow-xl animate-slide-up">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">
-          Login to Your Account
+      {/* Login Card */}
+      <div className="w-full max-w-md px-10 py-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl animate-fade-in">
+        <h2 className="text-3xl font-bold text-white text-center mb-3 tracking-wide">
+          Welcome Back
         </h2>
-        <p className="text-center text-gray-600 mb-8">
-          Enter your email and password to sign in.
+        <p className="text-center text-gray-300 mb-8 text-base">
+          Sign in to continue to your dashboard
         </p>
 
-        {/* Form Fields */}
+        {/* Form */}
         <form className="space-y-6">
-          {/* Email Input */}
           <div>
-            <label htmlFor="email" className="block text-lg font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-white mb-2"
+            >
               Email
             </label>
             <input
               id="email"
               type="email"
-              placeholder="Enter your email"
+              placeholder="you@example.com"
               onChange={(e) => handleInputChange("email", e.target.value)}
-              className="w-full p-3 bg-gray-100 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-cyan-400 focus:outline-none"
             />
           </div>
 
-          {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-lg font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-white mb-2"
+            >
               Password
             </label>
             <input
               id="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               onChange={(e) => handleInputChange("password", e.target.value)}
-              className="w-full p-3 bg-gray-100 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300"
+              className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-purple-400 focus:outline-none"
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="button"
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-teal-400 text-white font-bold rounded-lg hover:scale-105 transform transition-transform duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
+            className="w-full py-3 mt-2 bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-semibold text-lg rounded-lg shadow-lg hover:scale-[1.02] transition-transform focus:outline-none focus:ring-4 focus:ring-cyan-300"
             onClick={handleSubmit}
           >
             Login
           </button>
         </form>
 
-        {/* Sign-Up Redirect */}
-        <div className="mt-6 text-center">
-          <p className="text-gray-700">
-            Need an account?{" "}
+        {/* Redirect */}
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-300">
+            Don't have an account?{" "}
             <Link
               to="/auth/signup"
-              className="text-blue-600 hover:underline hover:text-blue-800"
+              className="text-cyan-400 font-medium hover:underline"
             >
-              Sign up
+              Create one
             </Link>
           </p>
         </div>

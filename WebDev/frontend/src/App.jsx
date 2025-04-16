@@ -15,12 +15,15 @@ import Dashboard2 from './pages/Dashboard2/index';
 import CropListByUser from './pages/AvailableCrops';
 import ChatList from './pages/Chat/ChatList';
 import ChatRoom from './pages/Chat/ChatRoom';
+import Navbar from './components/navbar';
 
 
 const App = () => {
   return (
     <WarehouseProvider> 
+       <Navbar />
       <Routes>
+        
        
         <Route path="/" element={<Home />} />
 

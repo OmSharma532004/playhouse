@@ -12,12 +12,15 @@ const ChatRoom = () => {
   const [userName, setUserName] = useState('');
   const bottomRef = useRef(null);
 
-  // ✅ Clean the userId from localStorage
   const rawUserId = localStorage.getItem('userId');
   const userId = rawUserId?.replace(/^"|"$/g, '');
   const token = localStorage.getItem('token');
 
+  // Fetch messages and user data when the component mounts or receiverId changes
   useEffect(() => {
+    // Reset messages for a new chat session
+    setMessages([]);
+    
     const fetchMessages = async () => {
       try {
         const res = await fetch(`http://localhost:4000/chat/chat/${receiverId}`, {
@@ -90,7 +93,6 @@ const ChatRoom = () => {
     if (!input.trim()) return;
 
     const message = { receiverId, content: input, senderId: userId };
-
     socket.emit('sendMessage', message);
 
     try {
@@ -115,28 +117,43 @@ const ChatRoom = () => {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4 text-white">
-      <div className="text-center text-2xl font-semibold mb-6">
-        Chatting with <span className="text-yellow-400">{receiverName}</span>
-      </div>
-      <div className="flex-1 overflow-y-auto space-y-4">
+    <div className="flex flex-col h-screen bg-gray-50 text-gray-900">
+      <header className="px-6 py-5 bg-white shadow-md border-b sticky top-0 z-10">
+        <h1 className="text-xl font-semibold">
+          💬 Chatting with <span className="text-blue-600">{receiverName}</span>
+        </h1>
+      </header>
+  
+      <main className="flex-1 px-6 py-6 overflow-y-auto space-y-6 scrollbar-thin scrollbar-thumb-blue-300">
         {messages.length > 0 ? (
           messages.map((msg, index) => {
-            const senderId =
-              typeof msg.senderId === 'object' ? msg.senderId._id : msg.senderId;
-
+            const senderId = typeof msg.senderId === 'object' ? msg.senderId._id : msg.senderId;
             const isMine = senderId?.toString() === userId?.toString();
             const senderName = isMine ? userName : receiverName;
-
+  
             return (
-              <div key={index}>
-                <div className={`text-sm ${isMine ? 'text-right' : 'text-left'} text-gray-200 mb-1`}>
-                  <span className="font-bold">{senderName}</span>
-                </div>
-                <div
-                  className={`p-4 rounded-3xl max-w-[70%] ${isMine ? 'bg-blue-600 text-white ml-auto' : 'bg-pink-300 text-black mr-auto'}`}
-                >
-                  <div className={`p-3 rounded-lg shadow-xl ${isMine ? 'bg-gradient-to-r from-blue-400 to-blue-700' : 'bg-gradient-to-r from-pink-300 to-pink-600'}`}>
+              <div
+                key={index}
+                className={`flex ${isMine ? 'justify-end' : 'justify-start'} items-end`}
+              >
+                {!isMine && (
+                  <div className="mr-3 w-9 h-9 bg-blue-200 text-blue-800 font-bold flex items-center justify-center rounded-full text-base">
+                    {receiverName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="max-w-[75%]">
+                  <div
+                    className={`text-base mb-1 ${isMine ? 'text-right text-gray-400' : 'text-left text-gray-500'}`}
+                  >
+                    {senderName}
+                  </div>
+                  <div
+                    className={`rounded-2xl px-6 py-4 text-lg leading-snug shadow-md ${
+                      isMine
+                        ? 'bg-blue-600 text-white rounded-br-none'
+                        : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none'
+                    }`}
+                  >
                     {msg.content}
                   </div>
                 </div>
@@ -144,26 +161,26 @@ const ChatRoom = () => {
             );
           })
         ) : (
-          <div className="text-center text-gray-200 text-lg animate-pulse">No messages yet. Start the conversation!</div>
+          <div className="text-center text-gray-400 mt-20 text-xl">No messages yet. Start chatting 👋</div>
         )}
         <div ref={bottomRef}></div>
-      </div>
-
-      <div className="flex items-center mt-8 space-x-4">
+      </main>
+  
+      <footer className="bg-white border-t px-6 py-5 flex items-center gap-4 sticky bottom-0">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 p-4 rounded-xl bg-white text-black shadow-lg border-2 border-transparent focus:outline-none focus:ring-2 focus:ring-pink-500 transition"
           placeholder="Type a message..."
+          className="flex-1 px-5 py-4 rounded-full border border-gray-300 focus:ring-2 focus:ring-blue-400 outline-none transition text-lg"
         />
         <button
           onClick={sendMessage}
-          className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-8 py-3 rounded-xl shadow-xl hover:scale-105 transform transition duration-300"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-lg shadow-md transition"
         >
           Send
         </button>
-      </div>
+      </footer>
     </div>
   );
 };

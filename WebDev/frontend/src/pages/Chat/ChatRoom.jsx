@@ -8,9 +8,10 @@ const ChatRoom = () => {
   const { userId: receiverId } = useParams();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [receiverName, setReceiverName] = useState('');
+  const [userName, setUserName] = useState('');
   const bottomRef = useRef(null);
 
-  // ✅ Clean the userId from localStorage
   const rawUserId = localStorage.getItem('userId');
   const userId = rawUserId?.replace(/^"|"$/g, '');
   const token = localStorage.getItem('token');
@@ -31,8 +32,40 @@ const ChatRoom = () => {
         console.error('Failed to fetch messages:', err);
       }
     };
+
+    const fetchUserData = async () => {
+      try {
+        const res = await fetch(`http://localhost:4000/user/getuser/${receiverId}`, {
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const receiverData = await res.json();
+        setReceiverName(receiverData.name);
+      } catch (err) {
+        console.error('Failed to fetch receiver info:', err);
+      }
+
+      try {
+        const userRes = await fetch(`http://localhost:4000/user/getuser/${userId}`, {
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userData = await userRes.json();
+        setUserName(userData.name);
+      } catch (err) {
+        console.error('Failed to fetch user info:', err);
+      }
+    };
+
     fetchMessages();
-  }, [receiverId, token]);
+    fetchUserData();
+  }, [receiverId, userId, token]);
 
   useEffect(() => {
     socket.emit('join', userId);
@@ -56,7 +89,6 @@ const ChatRoom = () => {
     if (!input.trim()) return;
 
     const message = { receiverId, content: input, senderId: userId };
-
     socket.emit('sendMessage', message);
 
     try {
@@ -81,49 +113,70 @@ const ChatRoom = () => {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-screen p-4">
-      <div className="flex-1 overflow-y-auto space-y-2">
+    <div className="flex flex-col h-screen bg-gray-50 text-gray-900">
+      <header className="px-6 py-5 bg-white shadow-md border-b sticky top-0 z-10">
+        <h1 className="text-xl font-semibold">
+          💬 Chatting with <span className="text-blue-600">{receiverName}</span>
+        </h1>
+      </header>
+  
+      <main className="flex-1 px-6 py-6 overflow-y-auto space-y-6 scrollbar-thin scrollbar-thumb-blue-300">
         {messages.length > 0 ? (
           messages.map((msg, index) => {
-            const senderId =
-              typeof msg.senderId === 'object' ? msg.senderId._id : msg.senderId;
-
+            const senderId = typeof msg.senderId === 'object' ? msg.senderId._id : msg.senderId;
             const isMine = senderId?.toString() === userId?.toString();
-
+            const senderName = isMine ? userName : receiverName;
+  
             return (
               <div
                 key={index}
-                className={`p-2 rounded-md max-w-[70%] ${
-                  isMine
-                    ? 'bg-blue-500 text-white text-right ml-auto'
-                    : 'bg-gray-200 text-black text-left mr-auto'
-                }`}
+                className={`flex ${isMine ? 'justify-end' : 'justify-start'} items-end`}
               >
-                {msg.content}
+                {!isMine && (
+                  <div className="mr-3 w-9 h-9 bg-blue-200 text-blue-800 font-bold flex items-center justify-center rounded-full text-base">
+                    {receiverName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="max-w-[75%]">
+                  <div
+                    className={`text-base mb-1 ${isMine ? 'text-right text-gray-400' : 'text-left text-gray-500'}`}
+                  >
+                    {senderName}
+                  </div>
+                  <div
+                    className={`rounded-2xl px-6 py-4 text-lg leading-snug shadow-md ${
+                      isMine
+                        ? 'bg-blue-600 text-white rounded-br-none'
+                        : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none'
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
+                </div>
               </div>
             );
           })
         ) : (
-          <div className="text-center text-gray-500">No messages yet.</div>
+          <div className="text-center text-gray-400 mt-20 text-xl">No messages yet. Start chatting 👋</div>
         )}
         <div ref={bottomRef}></div>
-      </div>
-
-      <div className="flex items-center mt-4">
+      </main>
+  
+      <footer className="bg-white border-t px-6 py-5 flex items-center gap-4 sticky bottom-0">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 p-2 border rounded-l-xl"
           placeholder="Type a message..."
+          className="flex-1 px-5 py-4 rounded-full border border-gray-300 focus:ring-2 focus:ring-blue-400 outline-none transition text-lg"
         />
         <button
           onClick={sendMessage}
-          className="bg-blue-500 text-white px-4 py-2 rounded-r-xl"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold text-lg shadow-md transition"
         >
           Send
         </button>
-      </div>
+      </footer>
     </div>
   );
 };
