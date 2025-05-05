@@ -16,6 +16,8 @@ import CropListByUser from './pages/AvailableCrops';
 import ChatList from './pages/Chat/ChatList';
 import ChatRoom from './pages/Chat/ChatRoom';
 import Navbar from './components/navbar';
+import PlantDiseaseDetection from './pages/PlantDisease';
+import IrrigationAdvisor from './pages/Irrigation';
 
 
 const App = () => {
@@ -35,7 +37,10 @@ const App = () => {
         <Route path="/availableCrops" element={<CropListByUser />} />
         <Route path="/chatList" element={<ChatList />} />
         <Route path="/chat/:userId" element={<ChatRoom />} />
+        <Route path="/disease" element={<PlantDiseaseDetection />} />
+        <Route path="/irrigation" element={<IrrigationAdvisor />} />
       </Routes>
+
     </WarehouseProvider>
   );
 };

@@ -15,10 +15,20 @@ const LoginForm = () => {
       [name]: value,
     }));
   };
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token) {
+      setIsLogin(true);
+      // Redirect to availableCrops if already logged in
+      window.location.href = "/availableCrops";
+    }
+  }, [token]);
+  // Redirect to availableCrops if already logged in
 
   useEffect(() => {
     if (isLogin && localStorage.getItem("userId")) {
-      navigate("/dashboard");
+      window.location.href = "/availableCrops";
     }
   }, [isLogin, navigate]);
 

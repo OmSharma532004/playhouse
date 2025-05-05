@@ -26,9 +26,9 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/auth/login" element={<LoginForm />} />
         <Route path="/auth/signup" element={<SignUpForm />} />
-        <Route path="/crop-input" element={<CropInput />} />
-        <Route path="/warehouse-input" element={<WarehouseInput />} />
-        <Route path="/dashboard" element={<Dashboard2 />} />
+        {/* <Route path="/crop-input" element={<CropInput />} />
+        <Route path="/warehouse-input" element={<WarehouseInput />} /> */}
+        {/* <Route path="/dashboard" element={<Dashboard2 />} /> */}
         <Route path="/availableCrops" element={<CropsPage />} />
         <Route path="/chatList" element={<ChatList />} />
         <Route path="/chat/:userId" element={<ChatRoom />} />

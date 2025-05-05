@@ -78,6 +78,17 @@ const CropListByUser = () => {
           ))}
         </div>
       )}
+
+      
+      <div className="mt-8 text-center">
+        <button
+          className="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition duration-300"
+          onClick={() => (window.location.href = '/crop-input')}
+        >
+          Add New Crop
+        </button>
+</div>
+
     </div>
   );
 };
